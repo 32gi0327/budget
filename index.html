@@ -59,7 +59,7 @@
             <p id="currentWeekRange" class="text-[11px] text-slate-500 font-medium mt-0.5">今週の予算管理</p>
           </div>
         </div>
-        <button onclick="openBudgetModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
+        <button type="button" onclick="openBudgetModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
           <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
           予算設定
         </button>
@@ -67,11 +67,11 @@
 
       <!-- タブ切り替え -->
       <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl">
-        <button id="tabBtnHome" onclick="switchTab('home')" class="tab-active py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5">
+        <button type="button" id="tabBtnHome" onclick="switchTab('home')" class="tab-active py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <i data-lucide="pie-chart" class="w-3.5 h-3.5"></i>
           今週の予算
         </button>
-        <button id="tabBtnHistory" onclick="switchTab('history')" class="tab-inactive py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5">
+        <button type="button" id="tabBtnHistory" onclick="switchTab('history')" class="tab-inactive py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <i data-lucide="history" class="w-3.5 h-3.5"></i>
           これまでの履歴
         </button>
@@ -164,175 +164,3 @@
         <!-- カテゴリ選択 -->
         <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-2.5" id="categoryContainer">
           <!-- JSで生成 -->
-        </div>
-
-        <!-- メモ入力＆登録ボタン -->
-        <div class="flex gap-2">
-          <input type="text" id="expenseMemo" placeholder="メモ（例：ランチ、コンビニ）"
-            class="flex-1 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white">
-          <button type="button" onclick="addExpense()"
-            class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-1 shrink-0">
-            <i data-lucide="check" class="w-4 h-4"></i>
-            登録
-          </button>
-        </div>
-      </div>
-
-      <!-- カテゴリ別内訳 -->
-      <div id="categoryBreakdownCard" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hidden">
-        <h2 class="text-xs font-bold text-slate-700 mb-3">今週のカテゴリ別内訳</h2>
-        <div id="categoryBars" class="space-y-2.5"></div>
-      </div>
-
-      <!-- 今週の支出履歴 -->
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xs font-bold text-slate-700">今週使った履歴</h2>
-          <span id="expenseCountBadge" class="text-[11px] font-bold text-slate-400">0件</span>
-        </div>
-        <div id="currentExpenseList" class="divide-y divide-slate-100">
-          <!-- JSで生成 -->
-        </div>
-      </div>
-
-      <!-- 週を締めるボタン -->
-      <div class="pt-2 pb-4">
-        <button onclick="openCloseWeekModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center justify-center gap-1.5">
-          <i data-lucide="archive" class="w-4 h-4"></i>
-          今週を締めて履歴に保存（次の週へ）
-        </button>
-      </div>
-    </div>
-
-    <!-- ==================== タブ2：これまでの履歴 ==================== -->
-    <div id="viewHistory" class="space-y-4 hidden">
-
-      <!-- 累計サマリー -->
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-        <h2 class="text-xs font-bold text-slate-500 mb-2">全期間の記録サマリー</h2>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="p-3 bg-slate-50 rounded-xl">
-            <p class="text-[10px] font-bold text-slate-400">締めた週の数</p>
-            <p id="totalArchivedWeeks" class="text-lg font-extrabold font-num text-slate-800 mt-0.5">0週</p>
-          </div>
-          <div class="p-3 bg-slate-50 rounded-xl">
-            <p class="text-[10px] font-bold text-slate-400">累計支出額（今週含む）</p>
-            <p id="totalAllTimeSpent" class="text-lg font-extrabold font-num text-slate-800 mt-0.5">¥0</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 過去の週ごとの成績一覧 -->
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-            <i data-lucide="calendar-check" class="w-4 h-4 text-emerald-500"></i>
-            過去の週の成績（アーカイブ）
-          </h2>
-        </div>
-        <div id="archivedWeeksList" class="space-y-2.5">
-          <!-- JSで生成 -->
-        </div>
-      </div>
-
-      <!-- 全期間の支出明細＆検索フィルター -->
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-            <i data-lucide="list" class="w-4 h-4 text-slate-500"></i>
-            すべての支出明細
-          </h2>
-          <span id="historyFilteredCount" class="text-[11px] font-bold text-slate-400">0件</span>
-        </div>
-
-        <!-- フィルターコントロール -->
-        <div class="space-y-2 mb-3">
-          <div class="grid grid-cols-2 gap-2">
-            <select id="filterWeekSelect" onchange="renderHistoryTab()" class="px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 focus:outline-none">
-              <option value="all">すべての期間</option>
-              <option value="current">今週のみ</option>
-            </select>
-            <select id="filterCategorySelect" onchange="renderHistoryTab()" class="px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 focus:outline-none">
-              <option value="all">すべてのカテゴリ</option>
-            </select>
-          </div>
-          <div class="relative">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-            <input type="text" id="filterKeywordInput" oninput="renderHistoryTab()" placeholder="メモ内容で検索..."
-              class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white">
-          </div>
-        </div>
-
-        <!-- 明細リスト -->
-        <div id="allHistoryList" class="divide-y divide-slate-100">
-          <!-- JSで生成 -->
-        </div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- ==================== モーダル：予算設定 ==================== -->
-  <div id="budgetModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-sm p-5 shadow-xl">
-      <h3 class="text-sm font-bold text-slate-900 mb-1">1週間の予算を設定</h3>
-      <p class="text-xs text-slate-500 mb-4">週初めに使える合計金額を入力してください。</p>
-      
-      <div class="relative mb-3">
-        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">¥</span>
-        <input type="number" id="modalBudgetInput" inputmode="numeric" placeholder="10000"
-          class="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xl font-extrabold font-num text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-      </div>
-
-      <div class="grid grid-cols-3 gap-1.5 mb-4">
-        <button type="button" onclick="setModalBudget(5000)" class="py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold font-num text-slate-700">¥5,000</button>
-        <button type="button" onclick="setModalBudget(10000)" class="py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold font-num text-slate-700">¥10,000</button>
-        <button type="button" onclick="setModalBudget(20000)" class="py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold font-num text-slate-700">¥20,000</button>
-      </div>
-
-      <div class="flex gap-2">
-        <button type="button" onclick="closeBudgetModal()" class="flex-1 py-2.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl">キャンセル</button>
-        <button type="button" onclick="saveBudget()" class="flex-1 py-2.5 bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-sm">保存する</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== モーダル：週を締める ==================== -->
-  <div id="closeWeekModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-sm p-5 shadow-xl">
-      <h3 class="text-sm font-bold text-slate-900 mb-1">今週を締めて新しい週を始める</h3>
-      <p class="text-xs text-slate-500 mb-4">今週の実績と明細を「これまでの履歴」に保存し、今週の支出をリセットします。</p>
-
-      <div class="bg-slate-50 rounded-xl p-3 mb-4 space-y-1.5 text-xs">
-        <div class="flex justify-between">
-          <span class="text-slate-500">今週の設定予算</span>
-          <span id="closeModalBudget" class="font-bold font-num">¥0</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-slate-500">使った合計</span>
-          <span id="closeModalSpent" class="font-bold font-num">¥0</span>
-        </div>
-        <div class="flex justify-between pt-1.5 border-t border-slate-200">
-          <span class="font-bold text-slate-700">残金</span>
-          <span id="closeModalRemaining" class="font-extrabold font-num text-emerald-600">¥0</span>
-        </div>
-      </div>
-
-      <label class="flex items-center gap-2 mb-4 cursor-pointer select-none">
-        <input type="checkbox" id="carryOverCheckbox" class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500">
-        <span class="text-xs font-medium text-slate-700">残金（プラスの場合）を次週の予算に繰り越す</span>
-      </label>
-
-      <div class="flex gap-2">
-        <button type="button" onclick="closeCloseWeekModal()" class="flex-1 py-2.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl">キャンセル</button>
-        <button type="button" onclick="confirmCloseWeek()" class="flex-1 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl shadow-sm">締めて次週へ</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // カテゴリ定義
-    const CATEGORIES = [
-      { id: 'food', name: '食費', icon: 'utensils', color: '#10b981', bg: 'bg-emerald-100', text: 'text-emerald-700' },
-      { id: 'cafe', name: 'カフェ・間食', icon: 'coffee', color: '#f59e0b', bg: 'bg-amber-100', text: 'text-amber-700' },
-      { id: 'daily', name: '日用品', icon: 'shopping-bag', color: '#3b82f6', bg: 'bg-blue-100', text: 'text
