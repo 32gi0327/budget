@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" translate="no">
 <head>
   <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Weekly Pocket - 週間予算＆お小遣い管理</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,12 +29,12 @@
       -webkit-tap-highlight-color: transparent;
     }
     .tab-active {
-      background-color: #0f172a;
-      color: #ffffff;
+      background-color: #0f172a !important;
+      color: #ffffff !important;
     }
     .tab-inactive {
-      background-color: transparent;
-      color: #64748b;
+      background-color: transparent !important;
+      color: #64748b !important;
     }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -44,7 +45,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen pb-24">
+<body class="min-h-screen pb-24 notranslate">
 
   <!-- ヘッダー -->
   <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
@@ -59,21 +60,21 @@
             <p id="currentWeekRange" class="text-[11px] text-slate-500 font-medium mt-0.5">今週の予算管理</p>
           </div>
         </div>
-        <button type="button" onclick="openBudgetModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
+        <button type="button" id="openBudgetBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
           <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
           予算設定
         </button>
       </div>
 
       <!-- タブ切り替え -->
-      <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl">
-        <button type="button" id="tabBtnHome" onclick="switchTab('home')" class="tab-active py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <i data-lucide="pie-chart" class="w-3.5 h-3.5"></i>
-          今週の予算
+      <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl relative z-40">
+        <button type="button" id="tabBtnHome" class="tab-active py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none">
+          <i data-lucide="pie-chart" class="w-3.5 h-3.5 pointer-events-none"></i>
+          <span class="pointer-events-none">今週の予算</span>
         </button>
-        <button type="button" id="tabBtnHistory" onclick="switchTab('history')" class="tab-inactive py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <i data-lucide="history" class="w-3.5 h-3.5"></i>
-          これまでの履歴
+        <button type="button" id="tabBtnHistory" class="tab-inactive py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none">
+          <i data-lucide="history" class="w-3.5 h-3.5 pointer-events-none"></i>
+          <span class="pointer-events-none">これまでの履歴</span>
         </button>
       </div>
     </div>
@@ -103,7 +104,7 @@
           <div id="progressBar" class="h-full bg-emerald-500 rounded-full transition-all duration-300" style="width: 100%"></div>
         </div>
 
-        <!-- サブ指標（予算・使用済み・1日あたり） -->
+        <!-- サブ指標 -->
         <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 text-center">
           <div>
             <p class="text-[10px] font-bold text-slate-400">設定予算</p>
@@ -128,39 +129,10 @@
             使った金額を登録
           </h2>
 
-          <!-- 日付指定コントロール（デフォルトは今日） -->
+          <!-- 日付指定コントロール -->
           <div class="flex items-center gap-1.5">
             <span id="customDateBadge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
               日付指定中
             </span>
-            <div class="relative flex items-center">
-              <input type="date" id="expenseDate" onchange="onExpenseDateChange()"
-                class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 rounded-lg text-[11px] font-bold font-num text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer">
-            </div>
-            <button type="button" id="resetTodayBtn" onclick="resetExpenseDateToToday()" class="hidden text-[10px] font-bold text-emerald-600 hover:text-emerald-700 underline">
-              今日に戻す
-            </button>
-          </div>
-        </div>
-
-        <!-- 金額入力＆クイック加算 -->
-        <div class="relative mb-2.5">
-          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-lg">¥</span>
-          <input type="number" id="expenseAmount" inputmode="numeric" placeholder="0"
-            class="w-full pl-8 pr-16 py-3 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-extrabold font-num text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
-          <button onclick="clearAmountInput()" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 hover:text-slate-600 px-2 py-1">
-            クリア
-          </button>
-        </div>
-
-        <!-- ワンタップ加算ボタン -->
-        <div class="grid grid-cols-4 gap-1.5 mb-3">
-          <button type="button" onclick="addQuickAmount(100)" class="py-1.5 bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-lg text-xs font-bold font-num text-slate-700 transition">+100</button>
-          <button type="button" onclick="addQuickAmount(500)" class="py-1.5 bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-lg text-xs font-bold font-num text-slate-700 transition">+500</button>
-          <button type="button" onclick="addQuickAmount(1000)" class="py-1.5 bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-lg text-xs font-bold font-num text-slate-700 transition">+1,000</button>
-          <button type="button" onclick="addQuickAmount(3000)" class="py-1.5 bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-lg text-xs font-bold font-num text-slate-700 transition">+3,000</button>
-        </div>
-
-        <!-- カテゴリ選択 -->
-        <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-2.5" id="categoryContainer">
-          <!-- JSで生成 -->
+            <input type="date" id="expenseDate"
+              class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 rounded-lg text-[11
