@@ -6,26 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Weekly Pocket - 週間予算＆お小遣い管理</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Noto Sans JP"', 'sans-serif'],
-            num: ['"Plus Jakarta Sans"', '"Noto Sans JP"', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
   <style>
     body {
       background-color: #f8fafc;
       color: #0f172a;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
     .tab-active {
@@ -48,33 +33,30 @@
 <body class="min-h-screen pb-24 notranslate">
 
   <!-- ヘッダー -->
-  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
-    <div class="max-w-md mx-auto px-4 pt-3 pb-2">
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-md mx-auto px-4 pt-3 pb-2.5">
       <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center text-white shadow-sm">
-            <i data-lucide="wallet" class="w-4 h-4"></i>
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center text-white font-bold text-base shadow-sm">
+            ¥
           </div>
           <div>
             <h1 class="text-base font-bold tracking-tight text-slate-900 leading-none">Weekly Pocket</h1>
-            <p id="currentWeekRange" class="text-[11px] text-slate-500 font-medium mt-0.5">今週の予算管理</p>
+            <p id="currentWeekRange" class="text-[11px] text-slate-500 font-medium mt-1">今週の予算管理</p>
           </div>
         </div>
-        <button type="button" id="openBudgetBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1">
-          <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
-          予算設定
+        <button type="button" id="openBudgetBtn" class="text-xs font-bold px-3 py-2 rounded-lg bg-slate-100 active:bg-slate-200 text-slate-700 transition">
+          ⚙ 予算設定
         </button>
       </div>
 
       <!-- タブ切り替え -->
-      <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl relative z-40">
-        <button type="button" id="tabBtnHome" class="tab-active py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none">
-          <i data-lucide="pie-chart" class="w-3.5 h-3.5 pointer-events-none"></i>
-          <span class="pointer-events-none">今週の予算</span>
+      <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl">
+        <button type="button" id="tabBtnHome" class="tab-active py-2.5 text-xs font-bold rounded-lg transition-all">
+          📊 今週の予算
         </button>
-        <button type="button" id="tabBtnHistory" class="tab-inactive py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer select-none">
-          <i data-lucide="history" class="w-3.5 h-3.5 pointer-events-none"></i>
-          <span class="pointer-events-none">これまでの履歴</span>
+        <button type="button" id="tabBtnHistory" class="tab-inactive py-2.5 text-xs font-bold rounded-lg transition-all">
+          📅 これまでの履歴
         </button>
       </div>
     </div>
@@ -86,7 +68,7 @@
     <div id="viewHome" class="space-y-4">
 
       <!-- 残金メインカード -->
-      <div id="balanceCard" class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 transition-colors">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80">
         <div class="flex items-center justify-between mb-1">
           <span class="text-xs font-bold text-slate-500">今週の残り予算</span>
           <span id="statusBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
@@ -96,7 +78,7 @@
 
         <div class="flex items-baseline gap-1 my-1">
           <span class="text-lg font-bold text-slate-400">¥</span>
-          <span id="remainingAmount" class="text-4xl font-extrabold font-num tracking-tight text-slate-900">0</span>
+          <span id="remainingAmount" class="text-4xl font-extrabold tracking-tight text-slate-900">10,000</span>
         </div>
 
         <!-- プログレスバー -->
@@ -108,15 +90,15 @@
         <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 text-center">
           <div>
             <p class="text-[10px] font-bold text-slate-400">設定予算</p>
-            <p id="displayBudget" class="text-xs font-bold font-num text-slate-700 mt-0.5">¥0</p>
+            <p id="displayBudget" class="text-xs font-bold text-slate-700 mt-0.5">¥10,000</p>
           </div>
           <div class="border-x border-slate-100">
             <p class="text-[10px] font-bold text-slate-400">使った合計</p>
-            <p id="displaySpent" class="text-xs font-bold font-num text-slate-700 mt-0.5">¥0</p>
+            <p id="displaySpent" class="text-xs font-bold text-slate-700 mt-0.5">¥0</p>
           </div>
           <div>
             <p class="text-[10px] font-bold text-slate-400">1日あたり目安</p>
-            <p id="displayDaily" class="text-xs font-bold font-num text-emerald-600 mt-0.5">¥0</p>
+            <p id="displayDaily" class="text-xs font-bold text-emerald-600 mt-0.5">¥0</p>
           </div>
         </div>
       </div>
@@ -124,10 +106,7 @@
       <!-- クイック支出登録フォーム -->
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-            <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-500"></i>
-            使った金額を登録
-          </h2>
+          <h2 class="text-xs font-bold text-slate-700">＋ 使った金額を登録</h2>
 
           <!-- 日付指定コントロール -->
           <div class="flex items-center gap-1.5">
@@ -135,4 +114,682 @@
               日付指定中
             </span>
             <input type="date" id="expenseDate"
-              class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200/80 rounded-lg text-[11
+              class="px-2.5 py-1 bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-bold text-slate-700 focus:outline-none">
+            <button type="button" id="resetTodayBtn" class="hidden text-[10px] font-bold text-emerald-600 underline">
+              今日
+            </button>
+          </div>
+        </div>
+
+        <!-- 金額入力 -->
+        <div class="relative mb-2.5">
+          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-lg">¥</span>
+          <input type="number" id="expenseAmount" inputmode="numeric" placeholder="0"
+            class="w-full pl-8 pr-16 py-3 bg-slate-50 border border-slate-200 rounded-xl text-2xl font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white">
+          <button id="clearAmountBtn" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 px-2 py-1">
+            クリア
+          </button>
+        </div>
+
+        <!-- ワンタップ加算ボタン -->
+        <div class="grid grid-cols-4 gap-1.5 mb-3">
+          <button type="button" data-add="100" class="quick-add-btn py-2 bg-slate-100 active:bg-slate-200 rounded-lg text-xs font-bold text-slate-700">+100</button>
+          <button type="button" data-add="500" class="quick-add-btn py-2 bg-slate-100 active:bg-slate-200 rounded-lg text-xs font-bold text-slate-700">+500</button>
+          <button type="button" data-add="1000" class="quick-add-btn py-2 bg-slate-100 active:bg-slate-200 rounded-lg text-xs font-bold text-slate-700">+1,000</button>
+          <button type="button" data-add="3000" class="quick-add-btn py-2 bg-slate-100 active:bg-slate-200 rounded-lg text-xs font-bold text-slate-700">+3,000</button>
+        </div>
+
+        <!-- カテゴリ選択 -->
+        <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-2.5" id="categoryContainer"></div>
+
+        <!-- メモ入力＆登録ボタン -->
+        <div class="flex gap-2">
+          <input type="text" id="expenseMemo" placeholder="メモ（例：ランチ、コンビニ）"
+            class="flex-1 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white">
+          <button type="button" id="addExpenseBtn"
+            class="px-5 py-2.5 bg-emerald-500 active:bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-sm shrink-0">
+            ✓ 登録
+          </button>
+        </div>
+      </div>
+
+      <!-- カテゴリ別内訳 -->
+      <div id="categoryBreakdownCard" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 hidden">
+        <h2 class="text-xs font-bold text-slate-700 mb-3">今週のカテゴリ別内訳</h2>
+        <div id="categoryBars" class="space-y-2.5"></div>
+      </div>
+
+      <!-- 今週の支出履歴 -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xs font-bold text-slate-700">今週使った履歴</h2>
+          <span id="expenseCountBadge" class="text-[11px] font-bold text-slate-400">0件</span>
+        </div>
+        <div id="currentExpenseList" class="divide-y divide-slate-100"></div>
+      </div>
+
+      <!-- 週を締めるボタン -->
+      <div class="pt-2 pb-4">
+        <button type="button" id="openCloseWeekBtn" class="w-full py-3.5 bg-slate-800 active:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-sm">
+          📦 今週を締めて履歴に保存（次の週へ）
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== タブ2：これまでの履歴 ==================== -->
+    <div id="viewHistory" class="space-y-4 hidden">
+
+      <!-- 累計サマリー -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-500 mb-2">全期間の記録サマリー</h2>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="p-3 bg-slate-50 rounded-xl">
+            <p class="text-[10px] font-bold text-slate-400">締めた週の数</p>
+            <p id="totalArchivedWeeks" class="text-lg font-extrabold text-slate-800 mt-0.5">0週</p>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl">
+            <p class="text-[10px] font-bold text-slate-400">累計支出額（今週含む）</p>
+            <p id="totalAllTimeSpent" class="text-lg font-extrabold text-slate-800 mt-0.5">¥0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 過去の週ごとの成績一覧 -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+        <h2 class="text-xs font-bold text-slate-700 mb-3">🗓 過去の週の成績（アーカイブ）</h2>
+        <div id="archivedWeeksList" class="space-y-2.5"></div>
+      </div>
+
+      <!-- 全期間の支出明細＆検索フィルター -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xs font-bold text-slate-700">📝 すべての支出明細</h2>
+          <span id="historyFilteredCount" class="text-[11px] font-bold text-slate-400">0件</span>
+        </div>
+
+        <!-- フィルターコントロール -->
+        <div class="space-y-2 mb-3">
+          <div class="grid grid-cols-2 gap-2">
+            <select id="filterWeekSelect" class="px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-700">
+              <option value="all">すべての期間</option>
+              <option value="current">今週のみ</option>
+            </select>
+            <select id="filterCategorySelect" class="px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-700">
+              <option value="all">すべてのカテゴリ</option>
+            </select>
+          </div>
+          <input type="text" id="filterKeywordInput" placeholder="🔍 メモ内容で検索..."
+            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:bg-white">
+        </div>
+
+        <!-- 明細リスト -->
+        <div id="allHistoryList" class="divide-y divide-slate-100"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== モーダル：予算設定 ==================== -->
+  <div id="budgetModal" class="fixed inset-0 z-50 bg-slate-900/50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-sm p-5 shadow-xl">
+      <h3 class="text-sm font-bold text-slate-900 mb-1">1週間の予算を設定</h3>
+      <p class="text-xs text-slate-500 mb-4">週初めに使える合計金額を入力してください。</p>
+      
+      <div class="relative mb-3">
+        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">¥</span>
+        <input type="number" id="modalBudgetInput" inputmode="numeric" placeholder="10000"
+          class="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xl font-extrabold text-slate-900">
+      </div>
+
+      <div class="grid grid-cols-3 gap-1.5 mb-4">
+        <button type="button" data-preset="5000" class="preset-budget-btn py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">¥5,000</button>
+        <button type="button" data-preset="10000" class="preset-budget-btn py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">¥10,000</button>
+        <button type="button" data-preset="20000" class="preset-budget-btn py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">¥20,000</button>
+      </div>
+
+      <div class="flex gap-2">
+        <button type="button" id="closeBudgetModalBtn" class="flex-1 py-2.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl">キャンセル</button>
+        <button type="button" id="saveBudgetBtn" class="flex-1 py-2.5 bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-sm">保存する</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== モーダル：週を締める ==================== -->
+  <div id="closeWeekModal" class="fixed inset-0 z-50 bg-slate-900/50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-sm p-5 shadow-xl">
+      <h3 class="text-sm font-bold text-slate-900 mb-1">今週を締めて新しい週を始める</h3>
+      <p class="text-xs text-slate-500 mb-4">今週の実績と明細を「これまでの履歴」に保存し、今週の支出をリセットします。</p>
+
+      <div class="bg-slate-50 rounded-xl p-3 mb-4 space-y-1.5 text-xs">
+        <div class="flex justify-between">
+          <span class="text-slate-500">今週の設定予算</span>
+          <span id="closeModalBudget" class="font-bold">¥0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">使った合計</span>
+          <span id="closeModalSpent" class="font-bold">¥0</span>
+        </div>
+        <div class="flex justify-between pt-1.5 border-t border-slate-200">
+          <span class="font-bold text-slate-700">残金</span>
+          <span id="closeModalRemaining" class="font-extrabold text-emerald-600">¥0</span>
+        </div>
+      </div>
+
+      <label class="flex items-center gap-2 mb-4 cursor-pointer">
+        <input type="checkbox" id="carryOverCheckbox" class="w-4 h-4 rounded text-emerald-500">
+        <span class="text-xs font-medium text-slate-700">残金（プラスの場合）を次週の予算に繰り越す</span>
+      </label>
+
+      <div class="flex gap-2">
+        <button type="button" id="cancelCloseWeekBtn" class="flex-1 py-2.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl">キャンセル</button>
+        <button type="button" id="confirmCloseWeekBtn" class="flex-1 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl shadow-sm">締めて次週へ</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var CATEGORIES = [
+        { id: 'food', name: '食費', emoji: '🍽', color: '#10b981', bg: 'bg-emerald-100' },
+        { id: 'cafe', name: 'カフェ・間食', emoji: '☕', color: '#f59e0b', bg: 'bg-amber-100' },
+        { id: 'daily', name: '日用品', emoji: '🛍', color: '#3b82f6', bg: 'bg-blue-100' },
+        { id: 'hobby', name: '趣味・娯楽', emoji: '🎮', color: '#8b5cf6', bg: 'bg-purple-100' },
+        { id: 'transport', name: '交通費', emoji: '🚃', color: '#06b6d4', bg: 'bg-cyan-100' },
+        { id: 'other', name: 'その他', emoji: '📦', color: '#64748b', bg: 'bg-slate-200' }
+      ];
+
+      var STORAGE_KEY = 'weekly_pocket_data_v1';
+
+      var state = {
+        weeklyBudget: 10000,
+        expenses: [],
+        archives: []
+      };
+
+      var selectedCategory = 'food';
+
+      function getTodayDateString() {
+        var now = new Date();
+        var y = now.getFullYear();
+        var m = String(now.getMonth() + 1).padStart(2, '0');
+        var d = String(now.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + d;
+      }
+
+      function loadState() {
+        try {
+          var saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            var parsed = JSON.parse(saved);
+            state.weeklyBudget = typeof parsed.weeklyBudget === 'number' ? parsed.weeklyBudget : 10000;
+            state.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
+            state.archives = Array.isArray(parsed.archives) ? parsed.archives : [];
+          }
+        } catch (e) {}
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+      }
+
+      function resetExpenseDateToToday() {
+        var dateInput = document.getElementById('expenseDate');
+        if (!dateInput) return;
+        dateInput.value = getTodayDateString();
+        onExpenseDateChange();
+      }
+
+      function onExpenseDateChange() {
+        var dateInput = document.getElementById('expenseDate');
+        var todayStr = getTodayDateString();
+        var badge = document.getElementById('customDateBadge');
+        var resetBtn = document.getElementById('resetTodayBtn');
+
+        if (dateInput.value && dateInput.value !== todayStr) {
+          badge.classList.remove('hidden');
+          resetBtn.classList.remove('hidden');
+          dateInput.classList.add('border-amber-400', 'bg-amber-50', 'text-amber-800');
+          dateInput.classList.remove('bg-slate-100', 'text-slate-700');
+        } else {
+          badge.classList.add('hidden');
+          resetBtn.classList.add('hidden');
+          dateInput.classList.remove('border-amber-400', 'bg-amber-50', 'text-amber-800');
+          dateInput.classList.add('bg-slate-100', 'text-slate-700');
+        }
+      }
+
+      function getCurrentWeekLabel() {
+        var now = new Date();
+        var day = now.getDay();
+        var diffToMon = day === 0 ? -6 : 1 - day;
+        var mon = new Date(now);
+        mon.setDate(now.getDate() + diffToMon);
+        var sun = new Date(mon);
+        sun.setDate(mon.getDate() + 6);
+        return (mon.getMonth() + 1) + '/' + mon.getDate() + ' 〜 ' + (sun.getMonth() + 1) + '/' + sun.getDate();
+      }
+
+      function getRemainingDaysInWeek() {
+        var day = new Date().getDay();
+        return day === 0 ? 1 : (8 - day);
+      }
+
+      function switchTab(tab) {
+        var viewHome = document.getElementById('viewHome');
+        var viewHistory = document.getElementById('viewHistory');
+        var btnHome = document.getElementById('tabBtnHome');
+        var btnHistory = document.getElementById('tabBtnHistory');
+
+        if (tab === 'home') {
+          viewHome.classList.remove('hidden');
+          viewHistory.classList.add('hidden');
+          btnHome.classList.add('tab-active');
+          btnHome.classList.remove('tab-inactive');
+          btnHistory.classList.add('tab-inactive');
+          btnHistory.classList.remove('tab-active');
+          renderHomeTab();
+        } else {
+          viewHome.classList.add('hidden');
+          viewHistory.classList.remove('hidden');
+          btnHome.classList.add('tab-inactive');
+          btnHome.classList.remove('tab-active');
+          btnHistory.classList.add('tab-active');
+          btnHistory.classList.remove('tab-inactive');
+          populateWeekFilter();
+          renderHistoryTab();
+        }
+      }
+
+      function renderCategories() {
+        var container = document.getElementById('categoryContainer');
+        container.innerHTML = CATEGORIES.map(function(cat) {
+          var isSelected = cat.id === selectedCategory;
+          var activeClass = isSelected
+            ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+            : 'bg-slate-50 text-slate-600 border-slate-200';
+          return '<button type="button" data-cat="' + cat.id + '" class="cat-chip-btn px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1 shrink-0 ' + activeClass + '">' +
+            '<span>' + cat.emoji + '</span><span>' + cat.name + '</span></button>';
+        }).join('');
+
+        var btns = container.querySelectorAll('.cat-chip-btn');
+        btns.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            selectedCategory = btn.getAttribute('data-cat');
+            renderCategories();
+          });
+        });
+      }
+
+      function addExpense() {
+        var amountInput = document.getElementById('expenseAmount');
+        var memoInput = document.getElementById('expenseMemo');
+        var dateInput = document.getElementById('expenseDate');
+        var amount = parseInt(amountInput.value, 10);
+
+        if (!amount || amount <= 0) {
+          amountInput.focus();
+          return;
+        }
+
+        var todayStr = getTodayDateString();
+        var selectedDateStr = dateInput.value || todayStr;
+        var isCustomDate = selectedDateStr !== todayStr;
+
+        var recordDateISO;
+        if (!isCustomDate) {
+          recordDateISO = new Date().toISOString();
+        } else {
+          var parts = selectedDateStr.split('-').map(Number);
+          recordDateISO = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0).toISOString();
+        }
+
+        state.expenses.unshift({
+          id: Date.now().toString(),
+          amount: amount,
+          category: selectedCategory,
+          memo: memoInput.value.trim(),
+          date: recordDateISO,
+          isCustomDate: isCustomDate
+        });
+
+        state.expenses.sort(function(a, b) {
+          return new Date(b.date) - new Date(a.date);
+        });
+        saveState();
+
+        amountInput.value = '';
+        memoInput.value = '';
+        resetExpenseDateToToday();
+        renderHomeTab();
+      }
+
+      function deleteExpense(id) {
+        state.expenses = state.expenses.filter(function(e) { return e.id !== id; });
+        saveState();
+        renderHomeTab();
+      }
+
+      function renderHomeTab() {
+        var totalSpent = state.expenses.reduce(function(sum, e) { return sum + e.amount; }, 0);
+        var remaining = state.weeklyBudget - totalSpent;
+        var ratio = state.weeklyBudget > 0 ? (remaining / state.weeklyBudget) * 100 : 0;
+        var clampedRatio = Math.max(0, Math.min(100, ratio));
+
+        document.getElementById('remainingAmount').textContent = remaining.toLocaleString();
+        document.getElementById('displayBudget').textContent = '¥' + state.weeklyBudget.toLocaleString();
+        document.getElementById('displaySpent').textContent = '¥' + totalSpent.toLocaleString();
+
+        var daysLeft = getRemainingDaysInWeek();
+        var dailyAllowance = remaining > 0 ? Math.floor(remaining / daysLeft) : 0;
+        document.getElementById('displayDaily').textContent = '¥' + dailyAllowance.toLocaleString();
+
+        var progressBar = document.getElementById('progressBar');
+        var statusBadge = document.getElementById('statusBadge');
+        var remainingEl = document.getElementById('remainingAmount');
+
+        progressBar.style.width = clampedRatio + '%';
+
+        if (remaining < 0) {
+          progressBar.className = 'h-full bg-rose-500 rounded-full transition-all duration-300';
+          statusBadge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700';
+          statusBadge.textContent = '予算オーバー';
+          remainingEl.className = 'text-4xl font-extrabold tracking-tight text-rose-600';
+        } else if (ratio <= 25) {
+          progressBar.className = 'h-full bg-amber-500 rounded-full transition-all duration-300';
+          statusBadge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700';
+          statusBadge.textContent = '残りわずか';
+          remainingEl.className = 'text-4xl font-extrabold tracking-tight text-amber-600';
+        } else {
+          progressBar.className = 'h-full bg-emerald-500 rounded-full transition-all duration-300';
+          statusBadge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700';
+          statusBadge.textContent = '順調ペース';
+          remainingEl.className = 'text-4xl font-extrabold tracking-tight text-slate-900';
+        }
+
+        renderCategoryBreakdown(totalSpent);
+        renderCurrentExpenseList();
+      }
+
+      function renderCategoryBreakdown(totalSpent) {
+        var card = document.getElementById('categoryBreakdownCard');
+        var container = document.getElementById('categoryBars');
+
+        if (state.expenses.length === 0 || totalSpent === 0) {
+          card.classList.add('hidden');
+          return;
+        }
+
+        card.classList.remove('hidden');
+        var totals = {};
+        state.expenses.forEach(function(e) {
+          totals[e.category] = (totals[e.category] || 0) + e.amount;
+        });
+
+        var sorted = CATEGORIES
+          .map(function(cat) { return Object.assign({}, cat, { amount: totals[cat.id] || 0 }); })
+          .filter(function(c) { return c.amount > 0; })
+          .sort(function(a, b) { return b.amount - a.amount; });
+
+        container.innerHTML = sorted.map(function(cat) {
+          var pct = Math.round((cat.amount / totalSpent) * 100);
+          return '<div>' +
+            '<div class="flex justify-between text-xs font-bold mb-1">' +
+              '<span class="text-slate-700">' + cat.emoji + ' ' + cat.name + '</span>' +
+              '<span class="text-slate-600">¥' + cat.amount.toLocaleString() + ' <span class="text-[10px] text-slate-400">(' + pct + '%)</span></span>' +
+            '</div>' +
+            '<div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">' +
+              '<div class="h-full rounded-full" style="width: ' + pct + '%; background-color: ' + cat.color + '"></div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      function renderCurrentExpenseList() {
+        var list = document.getElementById('currentExpenseList');
+        document.getElementById('expenseCountBadge').textContent = state.expenses.length + '件';
+
+        if (state.expenses.length === 0) {
+          list.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">まだ今週の支出は登録されていません</p>';
+          return;
+        }
+
+        list.innerHTML = state.expenses.map(function(e) {
+          var cat = CATEGORIES.find(function(c) { return c.id === e.category; }) || CATEGORIES[5];
+          var d = new Date(e.date);
+          var timeStr = e.isCustomDate
+            ? (d.getMonth() + 1) + '/' + d.getDate() + ' (日付指定)'
+            : (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+
+          return '<div class="py-2.5 flex items-center justify-between gap-2">' +
+            '<div class="flex items-center gap-2.5 min-w-0">' +
+              '<div class="w-8 h-8 rounded-xl ' + cat.bg + ' flex items-center justify-center shrink-0 text-sm">' + cat.emoji + '</div>' +
+              '<div class="min-w-0">' +
+                '<p class="text-xs font-bold text-slate-800 truncate">' + (e.memo || cat.name) + '</p>' +
+                '<p class="text-[10px] text-slate-400">' + cat.name + ' ・ ' + timeStr + '</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="flex items-center gap-2 shrink-0">' +
+              '<span class="text-sm font-extrabold text-slate-900">-¥' + e.amount.toLocaleString() + '</span>' +
+              '<button type="button" data-del="' + e.id + '" class="del-exp-btn px-2 py-1 text-xs text-slate-400 active:text-rose-500">✕</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        list.querySelectorAll('.del-exp-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            deleteExpense(btn.getAttribute('data-del'));
+          });
+        });
+      }
+
+      function populateCategoryFilter() {
+        var select = document.getElementById('filterCategorySelect');
+        select.innerHTML = '<option value="all">すべてのカテゴリ</option>' +
+          CATEGORIES.map(function(c) { return '<option value="' + c.id + '">' + c.name + '</option>'; }).join('');
+      }
+
+      function populateWeekFilter() {
+        var select = document.getElementById('filterWeekSelect');
+        var currentVal = select.value;
+        select.innerHTML = '<option value="all">すべての期間</option>' +
+          '<option value="current">今週 (' + getCurrentWeekLabel() + ')</option>' +
+          state.archives.map(function(arc) { return '<option value="' + arc.id + '">' + arc.label + '</option>'; }).join('');
+        if (Array.prototype.some.call(select.options, function(o) { return o.value === currentVal; })) {
+          select.value = currentVal;
+        }
+      }
+
+      function renderHistoryTab() {
+        var currentSpent = state.expenses.reduce(function(s, e) { return s + e.amount; }, 0);
+        var archivedSpent = state.archives.reduce(function(s, a) { return s + a.spent; }, 0);
+        document.getElementById('totalArchivedWeeks').textContent = state.archives.length + '週';
+        document.getElementById('totalAllTimeSpent').textContent = '¥' + (currentSpent + archivedSpent).toLocaleString();
+
+        var arcList = document.getElementById('archivedWeeksList');
+        if (state.archives.length === 0) {
+          arcList.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">まだ締められた週の記録はありません。「今週の予算」タブ下部の「今週を締めて履歴に保存」を押すとここに蓄積されます。</p>';
+        } else {
+          arcList.innerHTML = state.archives.map(function(arc) {
+            var isOver = arc.remaining < 0;
+            var badgeClass = isOver ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700';
+            var badgeText = isOver ? '¥' + Math.abs(arc.remaining).toLocaleString() + ' オーバー' : '¥' + arc.remaining.toLocaleString() + ' 黒字';
+            var pct = arc.budget > 0 ? Math.min(100, Math.round((arc.spent / arc.budget) * 100)) : 100;
+            var barColor = isOver ? 'bg-rose-500' : 'bg-emerald-500';
+
+            return '<div data-arc="' + arc.id + '" class="arc-card-btn p-3 rounded-xl border border-slate-200 bg-slate-50/50 cursor-pointer">' +
+              '<div class="flex items-center justify-between mb-1.5">' +
+                '<span class="text-xs font-bold text-slate-800">' + arc.label + '</span>' +
+                '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ' + badgeClass + '">' + badgeText + '</span>' +
+              '</div>' +
+              '<div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mb-2">' +
+                '<div class="h-full ' + barColor + ' rounded-full" style="width: ' + pct + '%"></div>' +
+              '</div>' +
+              '<div class="flex justify-between text-[11px] text-slate-500">' +
+                '<span>予算: ¥' + arc.budget.toLocaleString() + '</span>' +
+                '<span class="font-bold text-slate-700">使用: ¥' + arc.spent.toLocaleString() + '</span>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+
+          arcList.querySelectorAll('.arc-card-btn').forEach(function(card) {
+            card.addEventListener('click', function() {
+              var select = document.getElementById('filterWeekSelect');
+              select.value = card.getAttribute('data-arc');
+              renderHistoryTab();
+              select.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+          });
+        }
+
+        var weekFilter = document.getElementById('filterWeekSelect').value;
+        var catFilter = document.getElementById('filterCategorySelect').value;
+        var keyword = document.getElementById('filterKeywordInput').value.trim().toLowerCase();
+
+        var combinedExpenses = [];
+        if (weekFilter === 'all' || weekFilter === 'current') {
+          state.expenses.forEach(function(e) {
+            combinedExpenses.push(Object.assign({}, e, { weekLabel: '今週' }));
+          });
+        }
+        state.archives.forEach(function(arc) {
+          if (weekFilter === 'all' || weekFilter === arc.id) {
+            (arc.expenses || []).forEach(function(e) {
+              combinedExpenses.push(Object.assign({}, e, { weekLabel: arc.label }));
+            });
+          }
+        });
+
+        combinedExpenses.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+
+        var filtered = combinedExpenses.filter(function(e) {
+          if (catFilter !== 'all' && e.category !== catFilter) return false;
+          if (keyword) {
+            var cat = CATEGORIES.find(function(c) { return c.id === e.category; });
+            var targetText = ((e.memo || '') + ' ' + (cat ? cat.name : '')).toLowerCase();
+            if (targetText.indexOf(keyword) === -1) return false;
+          }
+          return true;
+        });
+
+        document.getElementById('historyFilteredCount').textContent = filtered.length + '件';
+        var allList = document.getElementById('allHistoryList');
+
+        if (filtered.length === 0) {
+          allList.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">該当する履歴がありません</p>';
+        } else {
+          allList.innerHTML = filtered.map(function(e) {
+            var cat = CATEGORIES.find(function(c) { return c.id === e.category; }) || CATEGORIES[5];
+            var d = new Date(e.date);
+            var dateStr = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+            return '<div class="py-2.5 flex items-center justify-between gap-2">' +
+              '<div class="flex items-center gap-2.5 min-w-0">' +
+                '<div class="w-8 h-8 rounded-xl ' + cat.bg + ' flex items-center justify-center shrink-0 text-sm">' + cat.emoji + '</div>' +
+                '<div class="min-w-0">' +
+                  '<p class="text-xs font-bold text-slate-800 truncate">' + (e.memo || cat.name) + '</p>' +
+                  '<p class="text-[10px] text-slate-400">' + dateStr + ' ・ ' + cat.name + ' | ' + e.weekLabel + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<span class="text-sm font-extrabold text-slate-900 shrink-0">-¥' + e.amount.toLocaleString() + '</span>' +
+            '</div>';
+          }).join('');
+        }
+      }
+
+      // 初期化実行
+      loadState();
+      resetExpenseDateToToday();
+      renderCategories();
+      populateCategoryFilter();
+      document.getElementById('currentWeekRange').textContent = '対象期間: ' + getCurrentWeekLabel();
+      renderHomeTab();
+
+      // イベント登録
+      document.getElementById('tabBtnHome').addEventListener('click', function() { switchTab('home'); });
+      document.getElementById('tabBtnHistory').addEventListener('click', function() { switchTab('history'); });
+      document.getElementById('expenseDate').addEventListener('change', onExpenseDateChange);
+      document.getElementById('resetTodayBtn').addEventListener('click', resetExpenseDateToToday);
+      document.getElementById('clearAmountBtn').addEventListener('click', function() {
+        document.getElementById('expenseAmount').value = '';
+      });
+
+      document.querySelectorAll('.quick-add-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var input = document.getElementById('expenseAmount');
+          var val = parseInt(btn.getAttribute('data-add'), 10) || 0;
+          input.value = (parseInt(input.value, 10) || 0) + val;
+        });
+      });
+
+      document.getElementById('addExpenseBtn').addEventListener('click', addExpense);
+
+      // 予算設定モーダル
+      document.getElementById('openBudgetBtn').addEventListener('click', function() {
+        document.getElementById('modalBudgetInput').value = state.weeklyBudget;
+        document.getElementById('budgetModal').classList.remove('hidden');
+      });
+      document.getElementById('closeBudgetModalBtn').addEventListener('click', function() {
+        document.getElementById('budgetModal').classList.add('hidden');
+      });
+      document.querySelectorAll('.preset-budget-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.getElementById('modalBudgetInput').value = btn.getAttribute('data-preset');
+        });
+      });
+      document.getElementById('saveBudgetBtn').addEventListener('click', function() {
+        var val = parseInt(document.getElementById('modalBudgetInput').value, 10);
+        if (val >= 0) {
+          state.weeklyBudget = val;
+          saveState();
+          renderHomeTab();
+        }
+        document.getElementById('budgetModal').classList.add('hidden');
+      });
+
+      // 週を締めるモーダル
+      document.getElementById('openCloseWeekBtn').addEventListener('click', function() {
+        var spent = state.expenses.reduce(function(s, e) { return s + e.amount; }, 0);
+        var remaining = state.weeklyBudget - spent;
+        document.getElementById('closeModalBudget').textContent = '¥' + state.weeklyBudget.toLocaleString();
+        document.getElementById('closeModalSpent').textContent = '¥' + spent.toLocaleString();
+        var remEl = document.getElementById('closeModalRemaining');
+        remEl.textContent = '¥' + remaining.toLocaleString();
+        remEl.className = remaining < 0 ? 'font-extrabold text-rose-600' : 'font-extrabold text-emerald-600';
+        document.getElementById('carryOverCheckbox').checked = false;
+        document.getElementById('closeWeekModal').classList.remove('hidden');
+      });
+      document.getElementById('cancelCloseWeekBtn').addEventListener('click', function() {
+        document.getElementById('closeWeekModal').classList.add('hidden');
+      });
+      document.getElementById('confirmCloseWeekBtn').addEventListener('click', function() {
+        var spent = state.expenses.reduce(function(s, e) { return s + e.amount; }, 0);
+        var remaining = state.weeklyBudget - spent;
+        var carryOver = document.getElementById('carryOverCheckbox').checked;
+
+        state.archives.unshift({
+          id: 'arc_' + Date.now(),
+          label: getCurrentWeekLabel(),
+          closedAt: new Date().toISOString(),
+          budget: state.weeklyBudget,
+          spent: spent,
+          remaining: remaining,
+          expenses: state.expenses.slice()
+        });
+        state.expenses = [];
+        if (carryOver && remaining > 0) {
+          state.weeklyBudget += remaining;
+        }
+        saveState();
+        document.getElementById('closeWeekModal').classList.add('hidden');
+        renderHomeTab();
+      });
+
+      // 履歴フィルター
+      document.getElementById('filterWeekSelect').addEventListener('change', renderHistoryTab);
+      document.getElementById('filterCategorySelect').addEventListener('change', renderHistoryTab);
+      document.getElementById('filterKeywordInput').addEventListener('input', renderHistoryTab);
+    })();
+  </script>
+</body>
+</html>
